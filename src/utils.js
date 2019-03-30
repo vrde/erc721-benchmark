@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import Web3 from "web3";
 
 function resolveWeb3(resolve, localProvider, authentication) {
@@ -47,17 +46,6 @@ function getWeb3(localProvider, authentication) {
 
 export function loadWeb3(localProvider) {
   return getWeb3(localProvider, false);
-}
-
-export function getEthers() {
-  const support = window.ethereum || window.web3;
-  let provider;
-  if (support) {
-    provider = new ethers.providers.Web3Provider(support);
-  } else {
-    provider = ethers.getDefaultProvider();
-  }
-  window.ethers = provider;
 }
 
 export async function tryCall(contract, method, ...args) {
