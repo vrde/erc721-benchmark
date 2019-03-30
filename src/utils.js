@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import Web3 from "web3";
 
 function resolveWeb3(resolve, localProvider, authentication) {
@@ -30,7 +31,7 @@ function resolveWeb3(resolve, localProvider, authentication) {
 }
 
 function getWeb3(localProvider, authentication) {
-  localProvider = localProvider || "http://localhost:8545";
+  localProvider = localProvider || "https://mainnet.infura.io/";
 
   return new Promise(resolve => {
     // Wait for loading completion to avoid race conditions with web3 injection timing.
@@ -45,5 +46,30 @@ function getWeb3(localProvider, authentication) {
 }
 
 export function loadWeb3(localProvider) {
-  return getWeb3(localProvider, true);
+  return getWeb3(localProvider, false);
+}
+
+export function getEthers() {
+  const support = window.ethereum || window.web3;
+  let provider;
+  if (support) {
+    provider = new ethers.providers.Web3Provider(support);
+  } else {
+    provider = ethers.getDefaultProvider();
+  }
+  window.ethers = provider;
+}
+
+export async function tryCall(contract, method, ...args) {
+  console.log(...args);
+  try {
+    return await contract.methods[method](...args).call();
+  } catch (error) {
+    let title = error.toString().split("\n")[0];
+    if (title === "Error: Invalid bytes string given: 0x") {
+      return `Contract doesn't implement method ${method}`;
+    } else {
+      throw error;
+    }
+  }
 }

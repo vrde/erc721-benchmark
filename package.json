@@ -3,17 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ethers": "^4.0.27",
     "openzeppelin-solidity": "^2.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "2.1.8",
-    "web3": "^1.0.0-beta.51"
+    "web3": "^1.0.0-beta.35",
+    "web3-utils": "^1.0.0-beta.35"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "truffle:compile": "truffle compile && node -e \"console.log(JSON.stringify(require('./build/contracts/NFT.json').abi, null, 2))\" > ./src/static/abis/NFT.json"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -3,11 +3,12 @@ import ReactDOM from "react-dom";
 import "./static/styles/index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { loadWeb3 } from "./utils.js";
+import { getEthers, loadWeb3 } from "./utils.js";
 import config from "./config.js";
 
 loadWeb3().then(web3 => {
   config.web3 = web3;
+  getEthers();
   ReactDOM.render(<App />, document.getElementById("root"));
 });
 
