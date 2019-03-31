@@ -3,6 +3,7 @@ import React, { Component } from "react";
 export default class Query extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       fetching: false,
       startTime: 0,
@@ -30,7 +31,19 @@ export default class Query extends Component {
       1000
     );
 
-    const tokens = await strategy(contract, owner);
+    let tokens = [];
+    let iterator = strategy(contract, owner);
+    while (true) {
+      try {
+        let { value, done } = await iterator.next();
+        tokens.push(value);
+        if (done) break;
+      } catch (error) {
+        tokens = [error.split("\n")[0]];
+        break;
+      }
+      this.setState({ tokens });
+    }
     clearInterval(this.intervalId);
     this.setState({
       tokens,
@@ -40,7 +53,7 @@ export default class Query extends Component {
   }
 
   render() {
-    const { tokens, startTime, stopTime } = this.state;
+    const { tokens, startTime, stopTime, fetching } = this.state;
     const { strategy } = this.props;
     return (
       <div className="Query">
@@ -51,7 +64,9 @@ export default class Query extends Component {
           Found {tokens.length} tokens: {tokens.join(", ")}
         </div>
         <div>Elapsed Time (s): {(stopTime - startTime) / 1000}</div>
-        <button onClick={this.fetchTokens.bind(this)}>Fetch</button>
+        <button onClick={this.fetchTokens.bind(this)} disabled={fetching}>
+          Fetch
+        </button>
       </div>
     );
   }

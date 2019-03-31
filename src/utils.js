@@ -1,5 +1,10 @@
 import Web3 from "web3";
 
+const ERRORS = [
+  "Error: ERROR: The returned value is not a convertible string:",
+  "Error: Couldn't decode uint256 from ABI: 0x"
+];
+
 function resolveWeb3(resolve, localProvider, authentication) {
   let web3;
 
@@ -54,7 +59,7 @@ export async function tryCall(contract, method, ...args) {
     return await contract.methods[method](...args).call();
   } catch (error) {
     let title = error.toString().split("\n")[0];
-    if (title === "Error: Invalid bytes string given: 0x") {
+    if (ERRORS.indexOf(title) !== -1) {
       return `Contract doesn't implement method ${method}`;
     } else {
       throw error;

@@ -2,7 +2,7 @@ import Utils from "web3-utils";
 
 // Inspired by:
 // https://github.com/TimDaub/ERC721-wallet/blob/master/src/sagas/fetchTransactions.js
-export async function tokensViaEvents(contract, address) {
+async function* tokensViaEvents(contract, address) {
   const outputs = await contract.getPastEvents("Transfer", {
     fromBlock: 0,
     toBlock: "latest",
@@ -12,7 +12,7 @@ export async function tokensViaEvents(contract, address) {
       null
     ]
   });
-  console.log(outputs);
+
   const inputs = await contract.getPastEvents("Transfer", {
     fromBlock: 0,
     toBlock: "latest",
@@ -23,7 +23,6 @@ export async function tokensViaEvents(contract, address) {
     ]
   });
 
-  console.log(inputs);
   for (let i = 0; i < outputs.length; i++) {
     const outputTokenId = outputs[i].returnValues.tokenId;
     for (let j = 0; j < inputs.length; j++) {
@@ -33,14 +32,26 @@ export async function tokensViaEvents(contract, address) {
       }
     }
   }
-  return inputs.map(x => x.returnValues.tokenId);
+  for (let i = 0; i < inputs.length; i++) {
+    yield inputs[i].returnValues.tokenId;
+  }
 }
 
-export async function balanceOf(contract, address) {
+async function* tokensViaEnum(contract, address) {
+  const n = await balanceOf(contract, address);
+  try {
+    for (let i = 0; i < n; i++) {
+      yield await contract.methods.tokenOfOwnerByIndex(address, i).call();
+    }
+  } catch (e) {}
+}
+
+async function balanceOf(contract, address) {
   return await contract.methods.balanceOf(address).call();
 }
 
 export default {
   tokensViaEvents,
+  tokensViaEnum,
   balanceOf
 };
