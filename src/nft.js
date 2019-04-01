@@ -1,4 +1,5 @@
 import { sha3, padLeft } from "web3-utils";
+import config from "./config";
 
 // Inspired by:
 // https://github.com/TimDaub/ERC721-wallet/blob/master/src/sagas/fetchTransactions.js
@@ -50,6 +51,29 @@ async function* tokensViaEnum(contract, address) {
   } catch (e) {}
 }
 
+async function* tokensViaEnumFullyAsync(contract, address) {
+  const { web3 } = config;
+  const n = await balanceOf(contract, address);
+
+  let promises = {};
+
+  try {
+    for (let i = 0; i < n; i++) {
+      promises[i] = new Promise((resolve, reject) =>
+        contract.methods
+          .tokenOfOwnerByIndex(address, i)
+          .call()
+          .then(r => resolve([i, r]))
+      );
+    }
+  } catch (e) {}
+  while (Object.values(promises).length) {
+    let [i, v] = await Promise.race(Object.values(promises));
+    delete promises[i];
+    yield v;
+  }
+}
+
 async function balanceOf(contract, address) {
   return await contract.methods.balanceOf(address).call();
 }
@@ -57,5 +81,6 @@ async function balanceOf(contract, address) {
 export default {
   tokensViaEvents,
   tokensViaEnum,
+  tokensViaEnumFullyAsync,
   balanceOf
 };

@@ -86,7 +86,7 @@ export default class Benchmark extends Component {
             <input
               name="owner"
               value={owner}
-              onChange={e => this.setState({ address: e.target.value })}
+              onChange={e => this.setState({ owner: e.target.value })}
               size="40"
             />
           </div>
@@ -104,6 +104,11 @@ export default class Benchmark extends Component {
             />
             <Query
               strategy={nft.tokensViaEnum}
+              contract={contract}
+              owner={owner}
+            />
+            <Query
+              strategy={nft.tokensViaEnumFullyAsync}
               contract={contract}
               owner={owner}
             />
