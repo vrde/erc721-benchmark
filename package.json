@@ -8,8 +8,8 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "2.1.8",
-    "web3": "^1.0.0-beta.35",
-    "web3-utils": "^1.0.0-beta.35"
+    "web3": "^1.0.0-beta.37",
+    "web3-utils": "^1.0.0-beta.37"
   },
   "scripts": {
     "start": "react-scripts start",

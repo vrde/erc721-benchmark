@@ -1,4 +1,4 @@
-import Utils from "web3-utils";
+import { sha3, padLeft } from "web3-utils";
 
 // Inspired by:
 // https://github.com/TimDaub/ERC721-wallet/blob/master/src/sagas/fetchTransactions.js
@@ -7,21 +7,25 @@ async function* tokensViaEvents(contract, address) {
     fromBlock: 0,
     toBlock: "latest",
     topics: [
-      Utils.sha3("Transfer(address,address,uint256)"),
-      Utils.padLeft(address, 64),
+      sha3("Transfer(address,address,uint256)"),
+      padLeft(address, 64),
       null
     ]
   });
+
+  console.log("outputs", outputs);
 
   const inputs = await contract.getPastEvents("Transfer", {
     fromBlock: 0,
     toBlock: "latest",
     topics: [
-      Utils.sha3("Transfer(address,address,uint256)"),
+      sha3("Transfer(address,address,uint256)"),
       null,
-      Utils.padLeft(address, 64)
+      padLeft(address, 64)
     ]
   });
+
+  console.log("inputs", inputs);
 
   for (let i = 0; i < outputs.length; i++) {
     const outputTokenId = outputs[i].returnValues.tokenId;

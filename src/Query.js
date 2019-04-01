@@ -36,10 +36,10 @@ export default class Query extends Component {
     while (true) {
       try {
         let { value, done } = await iterator.next();
-        tokens.push(value);
         if (done) break;
+        tokens.push(value);
       } catch (error) {
-        tokens = [error.split("\n")[0]];
+        tokens = [error.toString().split("\n")[0]];
         break;
       }
       this.setState({ tokens });
