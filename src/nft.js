@@ -74,6 +74,32 @@ async function* tokensViaEnumFullyAsync(contract, address) {
   }
 }
 
+async function* tokensViaEnumBatchFullyAsync(contract, address) {
+  const { web3 } = config;
+  const n = await balanceOf(contract, address);
+
+  let promises = {};
+  const batch = new web3.BatchRequest();
+
+  for (let i = 0; i < n; i++) {
+    promises[i] = new Promise((resolve, reject) =>
+      batch.add(
+        contract.methods
+          .tokenOfOwnerByIndex(address, i)
+          .call.request({ from: address }, (a, b) => resolve([i, b]))
+      )
+    );
+  }
+  try {
+    batch.execute();
+  } catch (e) {}
+  while (Object.values(promises).length) {
+    let [i, v] = await Promise.race(Object.values(promises));
+    delete promises[i];
+    yield v;
+  }
+}
+
 async function balanceOf(contract, address) {
   return await contract.methods.balanceOf(address).call();
 }
@@ -82,5 +108,6 @@ export default {
   tokensViaEvents,
   tokensViaEnum,
   tokensViaEnumFullyAsync,
+  tokensViaEnumBatchFullyAsync,
   balanceOf
 };

@@ -112,6 +112,11 @@ export default class Benchmark extends Component {
               contract={contract}
               owner={owner}
             />
+            <Query
+              strategy={nft.tokensViaEnumBatchFullyAsync}
+              contract={contract}
+              owner={owner}
+            />
           </div>
         )}
       </div>
