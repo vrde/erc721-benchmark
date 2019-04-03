@@ -23,6 +23,12 @@ export default class Query extends Component {
       this.props.owner !== prevProps.owner
     ) {
       console.log("clear interval");
+      this.setState({
+        fetching: false,
+        startTime: 0,
+        stopTime: 0,
+        tokens: []
+      });
       clearInterval(this.intervalId);
     }
   }
@@ -32,7 +38,9 @@ export default class Query extends Component {
 
     const erc721 = new ERC721(contract);
     if (!(await erc721.isEnumerable())) {
-      this.setState({ error: ["Contract does not implement Enumerable"] });
+      this.setState({
+        error: "Error: contract does't implement ERC721Enumerable"
+      });
       return;
     }
 
@@ -56,8 +64,8 @@ export default class Query extends Component {
         if (done) break;
         tokens.push(value);
       } catch (error) {
-        tokens = [error.toString().split("\n")[0]];
-        break;
+        this.setState({ error: error.toString().split("\n")[0] });
+        return;
       }
       this.setState({ tokens });
     }
@@ -81,7 +89,7 @@ export default class Query extends Component {
           Found {tokens.length} tokens: {tokens.join(", ")}
         </div>
         {error ? (
-          <div>Error: contract does't implement ERC721Enumerable</div>
+          <div>{error}</div>
         ) : (
           <div>
             <div>Elapsed Time (s): {(stopTime - startTime) / 1000}</div>
