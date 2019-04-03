@@ -68,6 +68,9 @@ export default class ERC721 {
   }
 
   async *tokensViaEnum(owner) {
+    if (!(await this.isEnumerable())) {
+      throw new Error("contract does't implement ERC721Enumerable");
+    }
     const { web3 } = config;
     const n = await this.balanceOf(owner);
 
@@ -89,6 +92,9 @@ export default class ERC721 {
   }
 
   async *tokensViaEnumBatch(owner) {
+    if (!(await this.isEnumerable())) {
+      throw new Error("contract does't implement ERC721Enumerable");
+    }
     const { web3 } = config;
     const n = await this.balanceOf(owner);
 

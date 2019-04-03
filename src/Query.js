@@ -37,12 +37,6 @@ export default class Query extends Component {
     const { strategy, contract, owner, disabled } = this.props;
 
     const erc721 = new ERC721(contract);
-    if (!(await erc721.isEnumerable())) {
-      this.setState({
-        error: "Error: contract does't implement ERC721Enumerable"
-      });
-      return;
-    }
 
     this.setState({
       fetching: true,
