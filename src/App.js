@@ -14,6 +14,13 @@ class App extends Component {
             </em>
           </p>
           <p>
+            Source code on GitHub:{" "}
+            <a href="https://www.github.com/vrde/erc721-benchmark">
+              github.com/vrde/erc721-benchmark
+            </a>
+            .
+          </p>
+          <p>
             The{" "}
             <a href="https://eips.ethereum.org/EIPS/eip-721">ERC721 standard</a>{" "}
             interface doesn't expose any method to get the list of token ids
