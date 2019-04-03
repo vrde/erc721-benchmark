@@ -108,7 +108,7 @@ export default class Benchmark extends Component {
           <h3>Metadata</h3>
           <div>Name: {name}</div>
           <div>Balance: {balance}</div>
-          <h1>Step 2: Test different strategies</h1>
+          <h1>Step 2: Test strategies</h1>
           <p>
             <em>
               Note: if you are aware of any caching mechanism that can
@@ -117,7 +117,7 @@ export default class Benchmark extends Component {
           </p>
           <p>
             Check the{" "}
-            <a href="https://github.com/vrde/erc721-benchmark/blob/master/src/nft.js">
+            <a href="https://github.com/vrde/erc721-benchmark/blob/master/src/ERC721.js">
               source code
             </a>{" "}
             of the different functions.
