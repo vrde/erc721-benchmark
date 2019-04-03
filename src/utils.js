@@ -53,16 +53,9 @@ export function loadWeb3(localProvider) {
   return getWeb3(localProvider, false);
 }
 
-export async function tryCall(contract, method, ...args) {
-  console.log(...args);
-  try {
-    return await contract.methods[method](...args).call();
-  } catch (error) {
-    let title = error.toString().split("\n")[0];
-    if (ERRORS.indexOf(title) !== -1) {
-      return `Contract doesn't implement method ${method}`;
-    } else {
-      throw error;
-    }
-  }
+// From: https://ethereum.stackexchange.com/a/50091/33448
+export async function hasMethod(web3, address, signature) {
+  const code = await web3.eth.getCode(address);
+  const hash = web3.eth.abi.encodeFunctionSignature(signature);
+  return code.indexOf(hash.slice(2, hash.length)) > 0;
 }
