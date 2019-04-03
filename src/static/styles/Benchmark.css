@@ -1,4 +1,4 @@
-.Benchmark li:hover {
+.Benchmark li {
   text-decoration: underline;
   cursor: pointer;
 }

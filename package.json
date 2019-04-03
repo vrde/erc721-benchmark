@@ -2,7 +2,7 @@
   "name": "erc721-benchmark",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://vrde.github.com/erc721-balance",
+  "homepage": "https://vrde.github.com/erc721-benchmark",
   "dependencies": {
     "openzeppelin-solidity": "^2.2.0",
     "react": "^16.8.6",

@@ -42,7 +42,7 @@ async function* tokensViaEvents(contract, address) {
   }
 }
 
-async function* tokensViaEnum(contract, address) {
+async function* tokensViaEnumSync(contract, address) {
   const n = await balanceOf(contract, address);
   try {
     for (let i = 0; i < n; i++) {
@@ -51,7 +51,7 @@ async function* tokensViaEnum(contract, address) {
   } catch (e) {}
 }
 
-async function* tokensViaEnumFullyAsync(contract, address) {
+async function* tokensViaEnum(contract, address) {
   const { web3 } = config;
   const n = await balanceOf(contract, address);
 
@@ -74,7 +74,7 @@ async function* tokensViaEnumFullyAsync(contract, address) {
   }
 }
 
-async function* tokensViaEnumBatchFullyAsync(contract, address) {
+async function* tokensViaEnumBatch(contract, address) {
   const { web3 } = config;
   const n = await balanceOf(contract, address);
 
@@ -106,8 +106,8 @@ async function balanceOf(contract, address) {
 
 export default {
   tokensViaEvents,
+  tokensViaEnumSync,
   tokensViaEnum,
-  tokensViaEnumFullyAsync,
-  tokensViaEnumBatchFullyAsync,
+  tokensViaEnumBatch,
   balanceOf
 };

@@ -37,6 +37,7 @@ export default class Benchmark extends Component {
       this.state || {};
     return (
       <div className="Benchmark">
+        <h1>Step 1: Load a Smart Contract</h1>
         Select one example from below:
         <ul>
           <li
@@ -94,26 +95,42 @@ export default class Benchmark extends Component {
         </form>
         {balance && (
           <div>
-            <h2>Metadata</h2>
+            <h3>Metadata</h3>
             <div>Name: {name}</div>
             <div>Balance: {balance}</div>
+            <h1>Step 2: Test different strategies</h1>
+            <p>
+              <em>
+                Note: if you are aware of any caching mechanism that can
+                invalidate those results please tell me.
+              </em>
+            </p>
+            <p>
+              Check the{" "}
+              <a href="https://github.com/vrde/erc721-benchmark/blob/master/src/nft.js">
+                source code
+              </a>{" "}
+              of the different functions.
+            </p>
             <Query
               strategy={nft.tokensViaEvents}
               contract={contract}
               owner={owner}
             />
+            {/*
+            <Query
+              strategy={nft.tokensViaEnum}
+              contract={contract}
+              owner={owner}
+            />
+            */}
             <Query
               strategy={nft.tokensViaEnum}
               contract={contract}
               owner={owner}
             />
             <Query
-              strategy={nft.tokensViaEnumFullyAsync}
-              contract={contract}
-              owner={owner}
-            />
-            <Query
-              strategy={nft.tokensViaEnumBatchFullyAsync}
+              strategy={nft.tokensViaEnumBatch}
               contract={contract}
               owner={owner}
             />

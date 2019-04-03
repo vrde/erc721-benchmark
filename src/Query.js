@@ -3,7 +3,6 @@ import React, { Component } from "react";
 export default class Query extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       fetching: false,
       startTime: 0,
@@ -11,7 +10,6 @@ export default class Query extends Component {
       tokens: []
     };
   }
-  componentDidMount() {}
 
   componentWillUnmount() {
     clearInterval(this.intervalId);
@@ -57,9 +55,9 @@ export default class Query extends Component {
     const { strategy } = this.props;
     return (
       <div className="Query">
-        <h2>
+        <h3>
           Fetch strategy: <code>{strategy.name}</code>
-        </h2>
+        </h3>
         <div>
           Found {tokens.length} tokens: {tokens.join(", ")}
         </div>
